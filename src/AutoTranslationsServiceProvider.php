@@ -4,7 +4,6 @@ namespace Subham\AutoTranslations;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Subham\AutoTranslations\Commands\AutoTranslationsCommand;
 use Subham\AutoTranslations\Commands\GenerateTranslationsCommand;
 
 class AutoTranslationsServiceProvider extends PackageServiceProvider
