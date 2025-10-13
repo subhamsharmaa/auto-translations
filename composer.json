@@ -1,12 +1,12 @@
 {
     "name": "subham/auto-translations",
-    "description": "This is my package auto-translations",
+    "description": "Automatically generate translation files for all your Laravel models",
     "keywords": [
         "subham",
         "laravel",
         "auto-translations"
     ],
-    "homepage": "https://github.com/subham/auto-translations",
+    "homepage": "https://github.com/subhamsharmaa/auto-translations",
     "license": "MIT",
     "authors": [
         {
