@@ -1,19 +1,11 @@
-# This is my package auto-translations
+# Laravel Auto Translation
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/subham/auto-translations.svg?style=flat-square)](https://packagist.org/packages/subham/auto-translations)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/subham/auto-translations/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/subham/auto-translations/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/subham/auto-translations/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/subham/auto-translations/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/subham/auto-translations.svg?style=flat-square)](https://packagist.org/packages/subham/auto-translations)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/auto-translations.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/auto-translations)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Automatically generate translation files for all your Laravel models. This package scans your models and creates JSON translation files based on their fillable attributes.
 
 ## Installation
 
@@ -38,22 +30,71 @@ php artisan vendor:publish --tag="auto-translations-config"
 
 This is the contents of the published config file:
 
-```php
-return [
+```return [
+    // Prefix for translation keys
+    'prefix' => 'fields',
+    
+    // Suffix for translation keys
+    'suffix' => 'label',
+    
+    // Locales to generate translations for
+    'locale' => ['en', 'es', 'fr'],
+    
+    // Paths to scan for models
+    'model_paths' => [
+        app_path('Models'),
+        // base_path('Modules/MyModule/Models'), // For modular apps
+    ],
+    
+    // Where to publish translation files
+    'publish_path' => resource_path('lang'),
 ];
 ```
 
-Optionally, you can publish the views using
+## Translation Key Format
+```{prefix}.{table_name}.{column_name}.{suffix}```
 
-```bash
-php artisan vendor:publish --tag="auto-translations-views"
+## Example
+| Prefix  |  Model  | Column  |Suffix|Final Result|
+|---------|---------|---------|------|------------|
+|         |  User   | email   |      | users.email|
+| fields  |  User   | email   |      | fields.users.email|
+|fields   |  User   |email    |column| fields.users.email.column|
+## Usage
+**Basic Command**
+
+Generate translation files for all models:
+
+```
+php artisan auto-translations:generate
+```
+This will prompt you for confirmation if translation files already exist.
+
+**Force Overwrite**
+
+Overwrite existing translation files without confirmation:
+```
+php artisan auto-translations:generate --force
 ```
 
-## Usage
+**Append Mode**
 
-```php
-$autoTranslations = new Subham\AutoTranslations();
-echo $autoTranslations->echoPhrase('Hello, Subham!');
+Add new translations while preserving existing ones:
+```
+php artisan auto-translations:generate --append
+```
+Use this when translators have customized translations and you want to add new keys only.
+
+## Example Output
+For a **User** model with fillable attributes **['name', 'email', 'phone']** with prefix **fields** and suffix **label**:
+
+**Generated Translation File**
+```
+{
+  "fields.users.email.label": "Email",
+  "fields.users.name.label": "Name",
+  "fields.users.phone.label": "Phone"
+}
 ```
 
 ## Testing
