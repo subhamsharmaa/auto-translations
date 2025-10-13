@@ -14,7 +14,7 @@ class GenerateTranslationsCommand extends Command
     public $description = 'Automatically generate translation files for all models.';
 
     public function handle(): int
-    {        
+    {
         $prefix = config('autotranslations.prefix');
         $suffix = config('autotranslations.suffix');
         $locales = config('autotranslations.locale');
@@ -26,10 +26,11 @@ class GenerateTranslationsCommand extends Command
 
         if ($force && $append) {
             $this->error('Cannot use --force and --append together. Please choose one.');
+
             return self::FAILURE;
         }
 
-        if (!is_dir($publishPath)) {
+        if (! is_dir($publishPath)) {
             mkdir($publishPath, 0755, true);
         }
 
@@ -88,19 +89,20 @@ class GenerateTranslationsCommand extends Command
                 mkdir($filePath, 0755, true);
             }
 
-            $file = $filePath . "/$locale.json";
-            
+            $file = $filePath."/$locale.json";
+
             if (file_exists($file)) {
                 if ($force) {
                     $finalTranslations = $allTranslations;
                 } elseif ($append) {
                     $existingTranslations = json_decode(file_get_contents($file), true) ?? [];
-                    
+
                     $finalTranslations = array_merge($allTranslations, $existingTranslations);
 
                 } else {
-                    if (!$this->confirm("Translation file for $locale already exists. Overwrite?", false)) {
+                    if (! $this->confirm("Translation file for $locale already exists. Overwrite?", false)) {
                         $this->info("Skipping $locale...");
+
                         continue;
                     }
                     $finalTranslations = $allTranslations;

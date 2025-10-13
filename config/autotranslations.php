@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This prefix will be added before every translation key.
-    | 
+    |
     | Format: {prefix}.{table_name}.{column_name}.{suffix}
     | Example with prefix 'fields': fields.users.name.label
     |
@@ -21,7 +21,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This suffix will be added after every translation key.
-    | 
+    |
     | Format: {prefix}.{table_name}.{column_name}.{suffix}
     | Example with suffix 'label': fields.users.name.label
     |
@@ -36,7 +36,7 @@ return [
     | The translation files will be generated for these locales.
     |
     | IMPORTANT: All generated translations will be in English (base language).
-    | The package only creates the file structure and keys - you need to 
+    | The package only creates the file structure and keys - you need to
     | manually translate the values for each locale afterward.
     | Example: ['en', 'es', 'fr', 'de']
     |
