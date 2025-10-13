@@ -7,18 +7,27 @@ use Illuminate\Support\Str;
 
 class GenerateTranslationsCommand extends Command
 {
-    public $signature = 'auto-translations:generate';
+    public $signature = 'auto-translations:generate 
+                        {--force : Force overwrite existing translations}
+                        {--append : Append new translations to existing files}';
 
     public $description = 'Automatically generate translation files for all models.';
 
     public function handle(): int
-    {
-        $this->info(' Scanning models for translatable attributes...');
+    {        
         $prefix = config('autotranslations.prefix');
         $suffix = config('autotranslations.suffix');
         $locales = config('autotranslations.locale');
         $modelPaths = config('autotranslations.model_paths');
-        $publishPath = config('autotranslations.publish_path', resource_path('lang/vendor/auto-translations'));
+        $publishPath = config('autotranslations.publish_path', resource_path('lang'));
+
+        $force = $this->option('force');
+        $append = $this->option('append');
+
+        if ($force && $append) {
+            $this->error('Cannot use --force and --append together. Please choose one.');
+            return self::FAILURE;
+        }
 
         if (!is_dir($publishPath)) {
             mkdir($publishPath, 0755, true);
@@ -51,6 +60,7 @@ class GenerateTranslationsCommand extends Command
                 }
             }
         }
+
         $allTranslations = [];
 
         foreach ($allModels as $modelClass) {
@@ -76,10 +86,31 @@ class GenerateTranslationsCommand extends Command
                 mkdir($filePath, 0755, true);
             }
 
-            $file = $filePath . "/$locale".".json";
-            file_put_contents($file, json_encode($allTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $file = $filePath . "/$locale.json";
+            
+            if (file_exists($file)) {
+                if ($force) {
+                    $finalTranslations = $allTranslations;
+                } elseif ($append) {
+                    $existingTranslations = json_decode(file_get_contents($file), true) ?? [];
+                    
+                    $finalTranslations = array_merge($allTranslations, $existingTranslations);
+
+                } else {
+                    if (!$this->confirm("Translation file for $locale already exists. Overwrite?", false)) {
+                        $this->info("Skipping $locale...");
+                        continue;
+                    }
+                    $finalTranslations = $allTranslations;
+                }
+            } else {
+                $finalTranslations = $allTranslations;
+            }
+
+            ksort($finalTranslations);
+
+            file_put_contents($file, json_encode($finalTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
-        $this->info('Translations generated successfully!');
 
         return self::SUCCESS;
     }

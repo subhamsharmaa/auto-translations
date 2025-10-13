@@ -19,7 +19,6 @@ class AutoTranslationsServiceProvider extends PackageServiceProvider
         $package
             ->name('auto-translations')
             ->hasConfigFile('autotranslations')
-            ->hasViews()
             ->hasCommand(GenerateTranslationsCommand::class);
     }
 }
