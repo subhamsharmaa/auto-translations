@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Subham\AutoTranslations\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class AutoTranslationsCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'auto-translations';
 
     public $description = 'My command';
 
