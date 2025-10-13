@@ -1,8 +1,8 @@
 # Laravel Auto Translation
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/subham/auto-translations.svg?style=flat-square)](https://packagist.org/packages/subham/auto-translations)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/subham/auto-translations/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/subham/auto-translations/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/subham/auto-translations/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/subham/auto-translations/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/subhamsharmaa/auto-translations/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/subhamsharmaa/auto-translations/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/subham/auto-translations/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/subhamsharmaa/auto-translations/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/subham/auto-translations.svg?style=flat-square)](https://packagist.org/packages/subham/auto-translations)
 
 Automatically generate translation files for all your Laravel models. This package scans your models and creates JSON translation files based on their fillable attributes.
