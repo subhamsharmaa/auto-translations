@@ -35,12 +35,13 @@ class GenerateTranslationsCommand extends Command
 
         $allModels = [];
         foreach ($modelPaths as $path) {
-            if (!is_dir($path)) {
+            if (! is_dir($path)) {
                 $this->warn("Directory $path does not exist, skipping...");
+
                 continue;
             }
 
-            $files = glob($path . '/*.php');
+            $files = glob($path.'/*.php');
 
             foreach ($files as $file) {
                 $class = pathinfo($file, PATHINFO_FILENAME);
@@ -51,7 +52,7 @@ class GenerateTranslationsCommand extends Command
                 } else {
                     $namespace = 'App\\Models';
                 }
-                $fqcn = $namespace . '\\' . $class;
+                $fqcn = $namespace.'\\'.$class;
 
                 if (class_exists($fqcn)) {
                     $allModels[] = $fqcn;
@@ -69,6 +70,7 @@ class GenerateTranslationsCommand extends Command
 
             if (empty($columns)) {
                 $this->warn("No fillable columns found for $modelClass, skipping...");
+
                 continue;
             }
 
@@ -82,7 +84,7 @@ class GenerateTranslationsCommand extends Command
 
         foreach ($locales as $locale) {
             $filePath = $publishPath;
-            if (!is_dir($filePath)) {
+            if (! is_dir($filePath)) {
                 mkdir($filePath, 0755, true);
             }
 
