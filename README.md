@@ -96,6 +96,9 @@ For a **User** model with fillable attributes **['name', 'email', 'phone']** wit
   "fields.users.phone.label": "Phone"
 }
 ```
+## Important
+All generated translations will be based on model's fillable attributes.
+The package only creates the file structure and keys - you need to manually translate the values for each locale afterward.
 
 ## Testing
 
