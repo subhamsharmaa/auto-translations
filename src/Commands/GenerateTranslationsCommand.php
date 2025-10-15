@@ -42,7 +42,7 @@ class GenerateTranslationsCommand extends Command
                 continue;
             }
 
-            $files = glob($path.'/*.php');
+            $files = glob($path . '/*.php');
 
             foreach ($files as $file) {
                 $class = pathinfo($file, PATHINFO_FILENAME);
@@ -53,7 +53,7 @@ class GenerateTranslationsCommand extends Command
                 } else {
                     $namespace = 'App\\Models';
                 }
-                $fqcn = $namespace.'\\'.$class;
+                $fqcn = $namespace . '\\' . $class;
 
                 if (class_exists($fqcn)) {
                     $allModels[] = $fqcn;
@@ -68,18 +68,23 @@ class GenerateTranslationsCommand extends Command
         foreach ($allModels as $modelClass) {
             $model = new $modelClass;
             $columns = $model->getFillable();
-
-            if (empty($columns)) {
-                $this->warn("No fillable columns found for $modelClass, skipping...");
-
-                continue;
-            }
-
             $modelName = Str::snake(Str::plural(class_basename($modelClass)));
 
-            foreach ($columns as $column) {
-                $key = trim("{$prefix}.{$modelName}.{$column}.{$suffix}", '.');
-                $allTranslations[$key] = ucwords(str_replace('_', ' ', $column));
+            if (!empty($columns)) {
+                foreach ($columns as $column) {
+                    $key = trim("{$prefix}.{$modelName}.{$column}.{$suffix}", '.');
+                    $allTranslations[$key] = ucwords(str_replace('_', ' ', $column));
+                }
+            }
+
+            if (method_exists($model, 'translationKeys')) {
+                $customKeys = $model->translationKeys();
+                if (is_array($customKeys) && ! empty($customKeys)) {
+                    foreach ($customKeys as $customKey) {
+                        $fullKey = trim("{$prefix}.{$modelName}.{$customKey}.{$suffix}", '.');
+                        $allTranslations[$fullKey] = ucwords(str_replace('_', ' ', $customKey));
+                    }
+                }
             }
         }
 
@@ -89,7 +94,7 @@ class GenerateTranslationsCommand extends Command
                 mkdir($filePath, 0755, true);
             }
 
-            $file = $filePath."/$locale.json";
+            $file = $filePath . "/$locale.json";
 
             if (file_exists($file)) {
                 if ($force) {
@@ -98,7 +103,6 @@ class GenerateTranslationsCommand extends Command
                     $existingTranslations = json_decode(file_get_contents($file), true) ?? [];
 
                     $finalTranslations = array_merge($allTranslations, $existingTranslations);
-
                 } else {
                     if (! $this->confirm("Translation file for $locale already exists. Overwrite?", false)) {
                         $this->info("Skipping $locale...");
@@ -115,7 +119,7 @@ class GenerateTranslationsCommand extends Command
 
             file_put_contents($file, json_encode($finalTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
-
+        $this->info("Completed");
         return self::SUCCESS;
     }
 }
