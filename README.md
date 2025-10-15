@@ -50,6 +50,21 @@ This is the contents of the published config file:
     'publish_path' => resource_path('lang'),
 ];
 ```
+## Define Translation keys
+1. Fillable fields from your model class.
+2. Define translationKeys() method on your model class
+```
+class Product extends Model
+{
+    protected $fillable = ['name', 'price'];
+
+    public function translationKeys(): array
+    {
+        return ['sku', 'category_name'];
+    }
+}
+
+```
 
 ## Translation Key Format
 ```{prefix}.{table_name}.{column_name}.{suffix}```
