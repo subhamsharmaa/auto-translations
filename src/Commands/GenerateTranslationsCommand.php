@@ -42,7 +42,7 @@ class GenerateTranslationsCommand extends Command
                 continue;
             }
 
-            $files = glob($path . '/*.php');
+            $files = glob($path.'/*.php');
 
             foreach ($files as $file) {
                 $class = pathinfo($file, PATHINFO_FILENAME);
@@ -53,7 +53,7 @@ class GenerateTranslationsCommand extends Command
                 } else {
                     $namespace = 'App\\Models';
                 }
-                $fqcn = $namespace . '\\' . $class;
+                $fqcn = $namespace.'\\'.$class;
 
                 if (class_exists($fqcn)) {
                     $allModels[] = $fqcn;
@@ -70,7 +70,7 @@ class GenerateTranslationsCommand extends Command
             $columns = $model->getFillable();
             $modelName = Str::snake(Str::plural(class_basename($modelClass)));
 
-            if (!empty($columns)) {
+            if (! empty($columns)) {
                 foreach ($columns as $column) {
                     $key = trim("{$prefix}.{$modelName}.{$column}.{$suffix}", '.');
                     $allTranslations[$key] = ucwords(str_replace('_', ' ', $column));
@@ -94,7 +94,7 @@ class GenerateTranslationsCommand extends Command
                 mkdir($filePath, 0755, true);
             }
 
-            $file = $filePath . "/$locale.json";
+            $file = $filePath."/$locale.json";
 
             if (file_exists($file)) {
                 if ($force) {
@@ -119,7 +119,8 @@ class GenerateTranslationsCommand extends Command
 
             file_put_contents($file, json_encode($finalTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
-        $this->info("Completed");
+        $this->info('Completed');
+
         return self::SUCCESS;
     }
 }
